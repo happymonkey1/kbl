@@ -30,6 +30,14 @@ void KBL_ERROR(Args&& ... args)
 }
 
 template <typename... Args>
+void KBL_COMPILER_ERROR(Args&& ... args)
+{
+	(std::cout << ... << args);
+	std::cout << std::endl;
+	exit(1);
+}
+
+template <typename... Args>
 void KBL_WARN(Args&& ... args)
 {
 	std::cout << "WARN: ";

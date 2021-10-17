@@ -3,7 +3,7 @@
 namespace kbl
 {
 	Parser::Parser(const std::filesystem::path& filepath)
-		: m_lexer{ filepath }, m_op_tokens{ std::vector<OpToken>{} }
+		: m_filepath{ filepath }, m_lexer { filepath }, m_op_tokens{ std::vector<OpToken>{} }
 	{
 		m_lexer.Run();
 
@@ -323,6 +323,10 @@ namespace kbl
 			{
 				case KeywordType::LET:
 				{
+					if (root->IsLeafNode())
+						KBL_COMPILER_ERROR(m_filepath.string(), ":", root->Data.Row, ":", root->Data.Column, ": let found without variable declaration following!");
+					
+
 					// #TODO make this better
 					if (root->Left->Right->Data.Type == TokenType::CONSTANT)
 						op_token.Type = OpCode::STORE_IM;
@@ -381,6 +385,7 @@ namespace kbl
 				}
 				else
 				{
+					// #TODO move to type checker
 					KBL_ERROR("compiler does not support adding [", HumanReadableTokenType::TokenTypeToString(left_node_type), ", ",
 						HumanReadableTokenType::TokenTypeToString(right_node_type), "]");
 				}

@@ -24,6 +24,7 @@ namespace kbl
 
 		OpCode ParseTreeExpressionOpCodeType(TreeNode* root);
 
+		std::filesystem::path m_filepath;
 		Lexer m_lexer;
 		std::vector<ParseTree> m_trees;
 		std::vector<OpToken> m_op_tokens;
